@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.WaybillMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Waybill">
+        <id column="wayb_id" property="waybId" />
+        <result column="wayb_code" property="waybCode" />
+        <result column="emp_id" property="empId" />
+        <result column="order_id" property="orderId" />
+        <result column="outlet_id" property="outletId" />
+        <result column="transport_type" property="transportType" />
+        <result column="transport_time" property="transportTime" />
+        <result column="complete_time" property="completeTime" />
+        <result column="sender" property="sender" />
+        <result column="sender_postcode" property="senderPostcode" />
+        <result column="sender_identity" property="senderIdentity" />
+        <result column="sender_area" property="senderArea" />
+        <result column="sender_address" property="senderAddress" />
+        <result column="sender_mobile" property="senderMobile" />
+        <result column="receiver" property="receiver" />
+        <result column="rece_postcode" property="recePostcode" />
+        <result column="rece_identity" property="receIdentity" />
+        <result column="rece_area" property="receArea" />
+        <result column="rece_address" property="receAddress" />
+        <result column="rece_mobile" property="receMobile" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_count" property="goodsCount" />
+        <result column="goods_weight" property="goodsWeight" />
+        <result column="goods_volume" property="goodsVolume" />
+        <result column="goods_total_price" property="goodsTotalPrice" />
+        <result column="goods_type" property="goodsType" />
+        <result column="goods_marker" property="goodsMarker" />
+        <result column="receipt" property="receipt" />
+        <result column="settlement_type" property="settlementType" />
+        <result column="total_cost" property="totalCost" />
+        <result column="customer" property="customer" />
+        <result column="customer_mobile" property="customerMobile" />
+        <result column="signfor_status" property="signforStatus" />
+        <result column="status" property="status" />
+        <result column="is_pay" property="isPay" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        wayb_id, wayb_code, emp_id, order_id, outlet_id, transport_type, transport_time, complete_time, sender, sender_postcode, sender_identity, sender_area, sender_address, sender_mobile, receiver, rece_postcode, rece_identity, rece_area, rece_address, rece_mobile, goods_name, goods_count, goods_weight, goods_volume, goods_total_price, goods_type, goods_marker, receipt, settlement_type, total_cost, customer, customer_mobile, signfor_status, status, is_pay
+    </sql>
+
+</mapper>

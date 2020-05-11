@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.InterWarehouseMapper">
+
+    <!-- 开启二级缓存 -->
+   <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.InterWarehouse">
+        <id column="id" property="id" />
+        <result column="inter_code" property="interCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_type" property="goodsType" />
+        <result column="goods_count" property="goodsCount" />
+        <result column="goods_total_weight" property="goodsTotalWeight" />
+        <result column="goods_total_price" property="goodsTotalPrice" />
+        <result column="goods_total_volume" property="goodsTotalVolume" />
+        <result column="inter_customer" property="interCustomer" />
+        <result column="inter_outlet_id" property="interOutletId" />
+        <result column="inter_wh_id" property="interWhId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, inter_code, goods_name, goods_type, goods_count, goods_total_weight, goods_total_price, goods_total_volume, inter_customer, inter_outlet_id, inter_wh_id, create_time
+    </sql>
+    
+    <!--根据仓库id动态查询今日入库数-->
+    <select id="findTodayInterWarehouse" resultType="int">
+      select count(*) from ca_inter_warehouse
+      <where>
+          to_days(create_time) = to_days(now())
+
+          <if test="whid!=null and whid!=''">
+              and inter_wh_id = #{whid}
+          </if>
+      </where>
+    </select>
+
+    <!--最近入库-->
+    <select id ="findRecentInterWarehouse" resultMap="BaseResultMap">
+        select *,abs(now()-create_time) as difftime from  ca_inter_warehouse
+        order by difftime limit 0,1
+    </select>
+
+
+
+</mapper>

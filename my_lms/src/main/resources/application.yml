@@ -1,0 +1,58 @@
+server:
+  port: 7004
+spring:
+  application:
+    name: my-lms
+  datasource:
+    username: root
+    password: 123456
+    url: "jdbc:mysql://localhost:3306/lms?characterEncoding=utf8&serverTimezone=UTC&useSSL=false"
+    driver-class-name: "com.mysql.jdbc.Driver"
+    type: com.alibaba.druid.pool.DruidDataSource
+    #缓存的配置
+  redis:
+    host: 127.0.0.1  #本机地址
+    port: 6379 #默认端口
+    #热部署的配置
+  devtools:
+    restart:
+      enabled: true #设置热部署生效
+      additional-paths: src/main/java
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+
+#集成mybatis 持久层
+#mybatis:
+#  mapper-locations: classpath:mybatis/mapper/*.xml,classpath:mybatis/mapper/self/*.xml
+#  config-location: classpath:mybatis/mybatis-config.xml
+#  type-aliases-package: com.lms.domain
+mybatis-plus:
+   #mapper映射文件的位置
+#  mapper-locations: classpath:/com/lms/mapper/*Mapper.xml
+   #加载mybatis配置文件
+  typeAliasesPackage: com.lms.domain
+  #策略的配置
+  global-config:
+    db-config:
+      db-type: MYSQL #数据库类型
+
+  #全局配置
+  configuration:
+    map-underscore-to-camel-case: true
+# log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# pageHelper分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# 日志的存放位置与级别
+logging:
+  level:
+    root: info
+  #指定日志生成的位置
+  file: log/lms.log
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'

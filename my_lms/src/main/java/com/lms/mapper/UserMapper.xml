@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.UserMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.User">
+        <id column="id" property="id" />
+        <result column="mobile" property="mobile" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="enable_state" property="enableState" />
+        <result column="create_time" property="createTime" />
+        <result column="outlets_id" property="outletsId" />
+        <result column="level" property="level" />
+        <result column="emp_id" property="empId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, mobile, username, password, enable_state, create_time, outlets_id, level, emp_id
+    </sql>
+
+    <!--根据用户id查询角色信息-->
+    <select id="findRolesByUserId" resultType="Role">
+        select id,name,code,description
+        from pe_role r right join pe_user_role ur on r.id = ur.role_id
+        <where>
+            ur.user_id = #{userid}
+        </where>
+    </select>
+
+    <!--用户登录的校验-->
+     <select id="findUserByMobile"  resultType="User">
+        select * from pe_user where mobile = #{mobile}
+    </select>
+
+
+
+
+    <!--&lt;!&ndash;根据用户id查询角色信息&ndash;&gt;-->
+    <select id="findRolesByUserId" resultType="Role">
+        select id,name,code,description
+        from pe_role r right join pe_user_role ur on r.id = ur.role_id
+        <where>
+            ur.user_id = #{userid}
+        </where>
+    </select>
+
+    <!-- &lt;!&ndash;根据用户id删除角色分配&ndash;&gt;-->
+    <delete id="delCurRoles"  >
+        delete from pe_user_role where user_id = #{userid}
+    </delete>
+
+   <!-- 根据id新增角色分配-->
+    <insert id="addCurRoles" >
+        <choose>
+            <when test="roleIds!=null and roleIds.size() > 0">
+                insert into pe_user_role(role_id,user_id) values
+                <foreach collection="roleIds" item="role" separator="," >
+                    (#{role},#{userid})
+                </foreach>
+            </when>
+            <otherwise>
+                select '1'
+            </otherwise>
+        </choose>
+    </insert>
+
+
+    <update id="updatePassword">
+        update pe_user set password = #{newpwd} where mobile = #{mobile}
+    </update>
+
+</mapper>

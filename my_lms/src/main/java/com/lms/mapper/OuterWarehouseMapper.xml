@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.OuterWarehouseMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.OuterWarehouse">
+        <id column="id" property="id" />
+        <result column="outer_code" property="outerCode" />
+        <result column="goods_type" property="goodsType" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_count" property="goodsCount" />
+        <result column="goods_total_volume" property="goodsTotalVolume" />
+        <result column="goods_total_price" property="goodsTotalPrice" />
+        <result column="goods_total_weight" property="goodsTotalWeight" />
+        <result column="outer_customer" property="outerCustomer" />
+        <result column="create_time" property="createTime" />
+        <result column="outer_outlet_id" property="outerOutletId" />
+        <result column="outer_wh_id" property="outerWhId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, outer_code, goods_type, goods_name, goods_count, goods_total_volume, goods_total_price, goods_total_weight, outer_customer, create_time, outer_outlet_id, outer_wh_id
+    </sql>
+
+    <!--根据仓库id动态查询今日出库数-->
+    <select id="findTodayOuterWarehouse" resultType="int">
+        select count(*) from ca_outer_warehouse
+        <where>
+            to_days(create_time) = to_days(now())
+             <if test="whid!=null and whid!=''">
+                 and outer_wh_id = #{whid}
+             </if>
+        </where>
+    </select>
+
+    <!--最近出库-->
+    <select id ="findRecentOuterWarehouse" resultMap="BaseResultMap">
+        select *,abs(now()-create_time) as difftime from  ca_outer_warehouse
+        order by difftime limit 0,1
+    </select>
+
+</mapper>

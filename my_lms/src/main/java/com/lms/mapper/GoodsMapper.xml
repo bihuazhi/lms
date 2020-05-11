@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.GoodsMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Goods">
+        <id column="id" property="id" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="goods_type" property="goodsType" />
+        <result column="goods_price" property="goodsPrice" />
+        <result column="goods_count" property="goodsCount" />
+        <result column="goods_volume" property="goodsVolume" />
+        <result column="goods_weight" property="goodsWeight" />
+        <result column="shelf_life" property="shelfLife" />
+        <result column="goods_wh_id" property="goodsWhId" />
+        <result column="marker" property="marker" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, goods_name, goods_code, goods_type, goods_price, goods_count, goods_volume, goods_weight, shelf_life, goods_wh_id, marker, create_time
+    </sql>
+
+</mapper>

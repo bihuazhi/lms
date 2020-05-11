@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://D:\idea_space\lms_parent\lms_common_model\lms_commom_model2.iml" filepath="D:\idea_space\lms_parent\lms_common_model\lms_commom_model2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lms_common/lms_common.iml" filepath="$PROJECT_DIR$/lms_common/lms_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lms_common_model/lms_common_model.iml" filepath="$PROJECT_DIR$/lms_common_model/lms_common_model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lms_model_plus/lms_model_plus.iml" filepath="$PROJECT_DIR$/lms_model_plus/lms_model_plus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lms_parent.iml" filepath="$PROJECT_DIR$/lms_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my_lms/my_lms.iml" filepath="$PROJECT_DIR$/my_lms/my_lms.iml" />
+    </modules>
+  </component>
+</project>

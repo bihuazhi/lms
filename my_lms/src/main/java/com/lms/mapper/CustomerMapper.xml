@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.CustomerMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Customer">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="customer_code" property="customerCode" />
+        <result column="settlement_method" property="settlementMethod" />
+        <result column="cooperation_times" property="cooperationTimes" />
+        <result column="email" property="email" />
+        <result column="mobile" property="mobile" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="area" property="area" />
+        <result column="address" property="address" />
+        <result column="outlets_id" property="outletsId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, customer_code, settlement_method, cooperation_times, email, mobile, province, city, area, address, outlets_id, create_time
+    </sql>
+
+</mapper>

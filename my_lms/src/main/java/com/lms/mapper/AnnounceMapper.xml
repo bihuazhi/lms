@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.AnnounceMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Announce">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="context" property="context" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, context, create_time
+    </sql>
+
+    <!--根据参数查询最新公告-->
+    <select id="findNewList" resultType="Announce">
+        select *,abs(now()-create_time) as difftime from announce order by difftime limit 0,#{count}
+    </select>
+
+</mapper>

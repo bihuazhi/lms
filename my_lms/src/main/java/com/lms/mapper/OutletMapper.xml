@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.OutletMapper">
+
+    <!-- 开启二级缓存 -->
+   <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Outlet">
+        <id column="id" property="id" />
+        <result column="outlet_code" property="outletCode" />
+        <result column="outlet_name" property="outletName" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="area" property="area" />
+        <result column="address" property="address" />
+        <result column="principal" property="principal" />
+        <result column="mobile" property="mobile" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!--网点和仓库信息-->
+    <resultMap id="Outlet_Warehouse_Map" type="com.lms.domain.Outlet">
+        <id column="id" property="id" />
+        <result column="outlet_name" property="outletName" />
+        <collection property="warehouses" ofType="Warehouse" javaType="java.util.ArrayList">
+                <id column="w_id" property="id"></id>
+                <result column="wh_name" property="whName"></result>
+        </collection>
+    </resultMap>
+
+    <!--查询网点和仓库信息-->
+    <select id="findOutletAndWarehouse" resultMap="Outlet_Warehouse_Map">
+        select o.id,o.outlet_name,w.wh_name,w.id as w_id
+        from in_outlet o left join ca_warehouse w on o.id = w.wh_outlet_id
+    </select>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, outlet_code, outlet_name, province, city, area, address, principal, mobile, remark, create_time, status
+    </sql>
+
+
+</mapper>

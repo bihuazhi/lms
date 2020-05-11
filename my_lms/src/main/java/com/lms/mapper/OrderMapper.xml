@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.OrderMapper">
+
+    <!-- 开启二级缓存 -->
+   <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Order">
+        <id column="id" property="id" />
+        <result column="order_code" property="orderCode" />
+        <result column="order_source" property="orderSource" />
+        <result column="customer_mobile" property="customerMobile" />
+        <result column="customer" property="customer" />
+        <result column="goods_count" property="goodsCount" />
+        <result column="goods_weight" property="goodsWeight" />
+        <result column="goods_price" property="goodsPrice" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_volume" property="goodsVolume" />
+        <result column="goods_marker" property="goodsMarker" />
+        <result column="goods_type" property="goodsType" />
+        <result column="settlement_type" property="settlementType" />
+        <result column="sender" property="sender" />
+        <result column="sender_mobile" property="senderMobile" />
+        <result column="sender_province" property="senderProvince" />
+        <result column="sender_city" property="senderCity" />
+        <result column="sender_area" property="senderArea" />
+        <result column="sender_address" property="senderAddress" />
+        <result column="receiver" property="receiver" />
+        <result column="receiver_mobile" property="receiverMobile" />
+        <result column="receiver_city" property="receiverCity" />
+        <result column="receiver_address" property="receiverAddress" />
+        <result column="receiver_area" property="receiverArea" />
+        <result column="receiver_province" property="receiverProvince" />
+        <result column="total_cost" property="totalCost" />
+        <result column="is_pay" property="isPay" />
+        <result column="employ_outlet_id" property="employOutletId" />
+        <result column="employ_wh_id" property="employWhId" />
+        <result column="employ_emp_id" property="employEmpId" />
+        <result column="employ_veh_id" property="employVehId" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="complete_time" property="completeTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_code, order_source, customer_mobile, customer, goods_count, goods_weight, goods_price, goods_name, goods_volume, goods_marker, goods_type, settlement_type, sender, sender_mobile, sender_province, sender_city, sender_area, sender_address, receiver, receiver_mobile, receiver_city, receiver_address, receiver_area, receiver_province, total_cost, is_pay, employ_outlet_id, employ_wh_id, employ_emp_id, employ_veh_id, status, create_time, complete_time
+    </sql>
+    
+    <resultMap id="statisticsMap"
+     type="com.lms.domain.info.response.DataStatstics">
+        <result  column="order_count" property="orderCount"></result>
+        <result column="wayb_count" property="waybCount"></result>
+        <result column="scan_count" property="scanCount"></result>
+        <result column="inter_count" property="interCount"></result>
+    </resultMap>
+
+    <select id="statistics" resultMap="statisticsMap">
+        select (SELECT count(*) FROM bu_order WHERE
+        date_format(create_time, '%Y %m') = date_format(DATE_SUB(curdate(), INTERVAL #{i} MONTH),'%Y %m')) as order_count,
+        (SELECT count(*) FROM wb_waybill WHERE
+        date_format(transport_time, '%Y %m') = date_format(DATE_SUB(curdate(), INTERVAL #{i} MONTH),'%Y %m')) as wayb_count,
+        (SELECT count(*) FROM se_scanning WHERE
+        date_format(create_time, '%Y %m') = date_format(DATE_SUB(curdate(), INTERVAL #{i} MONTH),'%Y %m')) as scan_count,
+        (SELECT count(*) FROM ca_inter_warehouse WHERE
+        date_format(create_time, '%Y %m') = date_format(DATE_SUB(curdate(), INTERVAL #{i} MONTH),'%Y %m')) as inter_count
+    </select>
+
+    <!--统计收入-->
+    <select id="incomeStatics" resultType="float">
+        select if(ISNULL(total_cost),0,total_cost) as total_cost,abs(now()-create_time) as difftime from  bu_order
+        where status != #{status} order by difftime desc limit 0,7
+    </select>
+
+
+</mapper>

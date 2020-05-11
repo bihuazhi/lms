@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.EmployeeMapper">
+
+    <!-- 开启二级缓存 -->
+   <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Employee">
+        <id column="id" property="id" />
+        <result column="outlet_id" property="outletId" />
+        <result column="emp_code" property="empCode" />
+        <result column="emp_name" property="empName" />
+        <result column="wh_id" property="whId" />
+        <result column="emp_mobile" property="empMobile" />
+        <result column="emp_working" property="empWorking" />
+        <result column="emp_address" property="empAddress" />
+        <result column="bind_user" property="bindUser" />
+        <result column="identity" property="identity" />
+        <result column="create_time" property="createTime" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, outlet_id, emp_code, emp_name, wh_id, emp_mobile, emp_working, emp_address, bind_user, identity, create_time, status
+    </sql>
+
+    <!--根据id集合修改状态-->
+    <update id="updateByStatusByIds">
+        <choose>
+        <when test="ids!=null and ids.size()> 0 ">
+          update in_employee set status = #{status} where id in
+            <foreach collection="ids" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </when>
+        <otherwise>
+         select '0'
+        </otherwise>
+        </choose>
+    </update>
+
+</mapper>

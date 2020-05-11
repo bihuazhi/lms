@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.WarehouseMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Warehouse">
+        <id column="id" property="id" />
+        <result column="wh_code" property="whCode" />
+        <result column="wh_name" property="whName" />
+        <result column="wh_outlet_id" property="whOutletId" />
+        <result column="wh_acreage" property="whAcreage" />
+        <result column="wh_inventory" property="whInventory" />
+        <result column="occupation" property="occupation" />
+        <result column="wh_principal" property="whPrincipal" />
+        <result column="principal_mobile" property="principalMobile" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, wh_code, wh_name, wh_outlet_id, wh_acreage, wh_inventory, occupation, wh_principal, principal_mobile, status, create_time
+    </sql>
+
+    <!--查询所有仓库占用量-->
+    <select id="findOccupationSum" resultType="float">
+        select  sum(occupation) from ca_warehouse
+    </select>
+
+    <!--查询所有仓库库存量-->
+    <select id="findInventorySum" resultType="float">
+        select  sum(wh_inventory) from ca_warehouse
+    </select>
+    
+    <resultMap id="wareStaticsMap" type="com.lms.domain.info.response.WareStatics">
+        <result property="moreInven" column="moreinven"></result>
+        <result property="halfInven" column="halfinven"></result>
+        <result property="lessInven" column="lessinven"></result>
+    </resultMap>
+
+    <select id="wareStatics" resultMap="wareStaticsMap">
+        select (select count(*) from ca_warehouse where wh_inventory/(wh_inventory+occupation) > 0.9) as moreinven,
+        (select count(*) from ca_warehouse where wh_inventory/(wh_inventory+occupation) > 0.5) as halfinven,
+        (select count(*) from ca_warehouse where wh_inventory/(wh_inventory+occupation) &lt; 0.1) as lessinven
+    </select>
+
+</mapper>

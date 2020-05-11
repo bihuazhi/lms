@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="common_model" />
+        <module name="lms_commom_model2" />
+        <module name="lms_common" />
+        <module name="lms_common_model" />
+        <module name="lms_customer" />
+        <module name="lms_model_plus" />
+        <module name="my_lms" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="common_model" target="1.8" />
+      <module name="lms_business" target="1.8" />
+      <module name="lms_capacity" target="1.8" />
+      <module name="lms_commom_model2" target="1.8" />
+      <module name="lms_common" target="1.8" />
+      <module name="lms_common_model" target="1.8" />
+      <module name="lms_customer" target="1.8" />
+      <module name="lms_euraka" target="1.8" />
+      <module name="lms_info" target="1.8" />
+      <module name="lms_model_plus" target="1.8" />
+      <module name="lms_parent" target="1.8" />
+      <module name="lms_waybill" target="1.8" />
+      <module name="my_lms" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

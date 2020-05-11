@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.ScanningMapper">
+
+    <!-- 开启二级缓存 -->
+   <!--  <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Scanning">
+        <id column="id" property="id" />
+        <result column="scan_code" property="scanCode" />
+        <result column="wayb_code" property="waybCode" />
+        <result column="create_time" property="createTime" />
+        <result column="scan_type" property="scanType" />
+        <result column="emp_id" property="empId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="settlement_type" property="settlementType" />
+        <result column="goods_weight" property="goodsWeight" />
+        <result column="destination" property="destination" />
+        <result column="fleet" property="fleet" />
+        <result column="next_outlet" property="nextOutlet" />
+        <result column="now_outlet" property="nowOutlet" />
+        <result column="signfor_time" property="signforTime" />
+        <result column="signfor_icon" property="signforIcon" />
+        <result column="signfor_mobile" property="signforMobile" />
+    </resultMap>
+
+    <resultMap id="Scan_Olet_Emp_Map" type="com.lms.domain.Scanning">
+        <id column="id" property="id" />
+        <result column="scan_code" property="scanCode" />
+        <result column="wayb_code" property="waybCode" />
+        <result column="create_time" property="createTime" />
+        <result column="scan_type" property="scanType" />
+        <result column="emp_id" property="empId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="settlement_type" property="settlementType" />
+        <result column="goods_weight" property="goodsWeight" />
+        <result column="destination" property="destination" />
+        <result column="fleet" property="fleet" />
+        <result column="next_outlet" property="nextOutlet" />
+        <result column="now_outlet" property="nowOutlet" />
+        <result column="signfor_time" property="signforTime" />
+        <result column="signfor_icon" property="signforIcon" />
+        <result column="signfor_mobile" property="signforMobile" />
+        <!--一对一查询网点-->
+        <association property="outlet" javaType="Outlet">
+            <id column="o_id" property="id"></id>
+            <result column="outlet_name" property="outletName"></result>
+            <result column="province" property="province"></result>
+            <result column="city" property="city"></result>
+            <result column="area" property="area"></result>
+            <result column="address" property="address"></result>
+        </association>
+        <!--嵌套查询员工-->
+        <association property="employee" javaType="Employee">
+            <id column="e_id" property="id"></id>
+            <result column="emp_name" property="empName"></result>
+            <result column="emp_working" property="empWorking"></result>
+            <result column="emp_mobile" property="empMobile"></result>
+            <result column="emp_address" property="empAddress"></result>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, scan_code, wayb_code, create_time, scan_type, emp_id, goods_name, settlement_type, goods_weight, destination, fleet, next_outlet, now_outlet, signfor_time, signfor_icon, signfor_mobile
+    </sql>
+
+    <!--查询物流信息-->
+    <select id="findScansOutlsAndEmpsByWaybCode" resultMap="Scan_Olet_Emp_Map">
+    select s.*,o.id o_id ,o.outlet_name,o.province,o.city,o.area,o.address,
+    e.id e_id,e.emp_name,e.emp_mobile,e.emp_working,e.emp_address
+    from se_scanning s left join in_outlet o on s.now_outlet = o.id or s.next_outlet = o.id
+    join in_employee e on s.emp_id = e.id where s.wayb_code = #{waybcode}
+    </select>
+
+
+    <resultMap id="Scan_Olet_Map" type="com.lms.domain.Scanning">
+        <id column="id" property="id" />
+        <result column="scan_code" property="scanCode" />
+        <result column="wayb_code" property="waybCode" />
+        <result column="create_time" property="createTime" />
+        <result column="scan_type" property="scanType" />
+        <result column="emp_id" property="empId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="settlement_type" property="settlementType" />
+        <result column="goods_weight" property="goodsWeight" />
+        <result column="destination" property="destination" />
+        <result column="fleet" property="fleet" />
+        <result column="next_outlet" property="nextOutlet" />
+        <result column="now_outlet" property="nowOutlet" />
+        <result column="signfor_time" property="signforTime" />
+        <result column="signfor_icon" property="signforIcon" />
+        <result column="signfor_mobile" property="signforMobile" />
+        <association property="outlet" javaType="Outlet">
+            <id column="o_id" property="id"></id>
+            <result column="outlet_name" property="outletName"></result>
+            <result column="province" property="province"></result>
+            <result column="city" property="city"></result>
+            <result column="area" property="area"></result>
+            <result column="address" property="address"></result>
+        </association>
+    </resultMap>
+    <!--查询货物跟踪信息-->
+    <select id="findScansOutlsByWaybCode" resultMap="Scan_Olet_Map">
+        select  s.*,o.id o_id ,o.outlet_name,o.province,o.city,o.area,o.address
+        from se_scanning s left join in_outlet o on s.now_outlet = o.id or s.next_outlet = o.id
+        where s.wayb_code = #{waybcode} order by s.scan_type desc limit 0,1
+    </select>
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lms.mapper.PermissionMapper">
+
+    <!-- 开启二级缓存 -->
+   <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lms.domain.Permission">
+        <id column="id" property="id" />
+        <result column="description" property="description" />
+        <result column="path" property="path" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="pid" property="pid" />
+        <result column="code" property="code" />
+        <result column="en_visible" property="enVisible" />
+        <result column="url" property="url" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, description, path, name, type, pid, code, en_visible, url
+    </sql>
+
+    <!--根据角色id查询权限-->
+    <select id="findPermsByRoleId" resultType="Permission">
+        select p.* from pe_permission p
+        right join pe_role_permission rp on p.id = rp.permission_id
+        <where>
+            rp.role_id = #{roleid}
+        </where>
+    </select>
+
+     <!--<resultMap id="role_perm_map" type="Role">
+         <id column="id" property="id"></id>
+         <result column="name" property="name"></result>
+         <result column="code" property="code"></result>
+         <result column="description" property="description"></result>
+         <collection property="perms" ofType="Permission">
+             <id column="p_id" property="id"></id>
+             <result column="p_name" property="name"></result>
+             <result column="p_code" property="code"></result>
+             <result column="p_description" property="description"></result>
+             <result column="type" property="type"></result>
+             <result column="pid" property="pid"></result>
+             <result column="en_visible" property="enVisible"></result>
+             <result column="url" property="url"></result>
+             <result column="path" property="path"></result>
+         </collection>
+     </resultMap>-->
+
+    <!--根据账户查询 获取当前用户下的所有权限-->
+    <select id="findRolesPermsByRoleId" resultType="Permission">
+        select distinct p.id,p.name,p.code,p.description,p.type,p.pid,p.en_visible,p.url,p.path
+        from pe_permission p right join pe_role_permission rp on rp.permission_id = p.id
+        <where>
+            <choose>
+                <when test="roleIds!=null">
+                    rp.role_id in
+                    <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+                        #{roleId}
+                    </foreach>
+                </when>
+                <otherwise>
+                    rp.role_id in('this is not exist')
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+
+</mapper>
